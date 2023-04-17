@@ -33,3 +33,17 @@ create table if not exists Track (
 	duration TIME not null,
 	album_id INTEGER not null references Album(album_id)
 );
+
+--Доп. задание Сотрудник
+
+create table if not exists Supervisor (
+	id SERIAL primary key,
+	supervisor_name VARCHAR(80) not null
+);
+
+create table if not exists Employee (
+	id SERIAL primary key,
+	superviser INTEGER references Supervisor(id),
+	name VARCHAR(80) not null,
+	department VARCHAR(80) not null
+);
