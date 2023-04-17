@@ -11,8 +11,8 @@ create table if not exists Singer(
 );
 
 create table if not exists Genres_Singers (
-	singer_id INTEGER references Genre(singer_id),
-	genre_id INTEGER references Singer(genre_id)
+	singer_id INTEGER references Genre(genre_id),
+	genre_id INTEGER references Singer(singer_id)
 );
 
 create table if not exists Album(
