@@ -34,6 +34,13 @@ create table if not exists Track (
 	album_id INTEGER not null references Album(album_id)
 );
 
+create table if not exists Collection (
+	collection_id SERIAL primary key,
+	collection_name VARCHAR(80) not null,
+	year_of_release DATE not null,
+	track_id INTEGER not null references Track(track_id)
+);
+
 --Доп. задание Сотрудник
 
 create table if not exists Supervisor (
