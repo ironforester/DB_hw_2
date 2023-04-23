@@ -1,56 +1,58 @@
-create table if not exists Genre(
-	genre_id SERIAL primary key,
-	genre_name VARCHAR(40) not null
+-Исправил ошибки согласно Вашим рекомендациям, заменил тип данных в поле Альбом и Коллекция из date в integer, чтобы удобнее было заполнять таблицу данными, тк
+при использовании date нужно ещё вводить день и месяц. Может ещё какие то ограничения посоветуте внести...
+
+
+
+CREATE TABLE IF NOT EXISTS Genre(
+	genre_id SERIAL PRIMARY KEY,
+	genre_name VARCHAR(40) NOT NULL UNIQUE 
 );
 
 
-create table if not exists Singer(
-	singer_id SERIAL primary key,
-	name VARCHAR(80) not null,
-	genre_id INTEGER references Genre(genre_id)
+CREATE TABLE IF NOT EXISTS Singer(
+	singer_id SERIAL PRIMARY KEY,
+	name VARCHAR(80) NOT NULL
 );
 
-create table if not exists Genres_Singers (
-	singer_id INTEGER references Genre(genre_id),
-	genre_id INTEGER references Singer(singer_id)
+
+CREATE TABLE IF NOT EXISTS Genres_Singers (
+singer_id INTEGER REFERENCES Singer(singer_id),
+genre_id INTEGER REFERENCES Genre(genre_id),
+CONSTRAINT pk PRIMARY KEY(singer_id, genre_id)
 );
 
-create table if not exists Album(
-	album_id SERIAL primary key,
-	album_name VARCHAR(80) not null,
-	year_of_release DATE not null,
-	singer_id INTEGER not null references Singer(singer_id)
+CREATE TABLE IF NOT EXISTS Album(
+	album_id SERIAL PRIMARY KEY,
+	album_name VARCHAR(80) NOT NULL,
+	year_of_release INTEGER NOT NULL CHECK(1990<=year_of_release AND year_of_release <=2023)
 );
 
-create table if not exists Albums_Singers (
-	singer_id INTEGER references Singer(singer_id),
-	album_id INTEGER references Album(album_id)
+CREATE TABLE IF NOT EXISTS Albums_Singers (
+	singer_id INTEGER REFERENCES Singer(singer_id),
+	album_id INTEGER REFERENCES Album(album_id),
+	CONSTRAINT ak PRIMARY KEY(singer_id, album_id)
 );
 
-create table if not exists Track (
-	track_id SERIAL primary key,
-	track_name VARCHAR(80) not null,
-	duration TIME not null,
-	album_id INTEGER not null references Album(album_id)
+CREATE TABLE IF NOT EXISTS Track (
+	track_id SERIAL PRIMARY KEY,
+	track_name VARCHAR(80) NOT NULL,
+	duration INTEGER NOT NULL CHECK(duration>=30 AND duration <=600),
+	album_id INTEGER NOT NULL REFERENCES Album(album_id)
 );
 
-create table if not exists Collection (
-	collection_id SERIAL primary key,
-	collection_name VARCHAR(80) not null,
-	year_of_release DATE not null,
-	track_id INTEGER not null references Track(track_id)
+
+CREATE TABLE IF NOT EXISTS Collection (
+	collection_id SERIAL PRIMARY KEY,
+	collection_name VARCHAR(80) NOT NULL,
+	year_of_release INTEGER NOT NULL CHECK(2000<=year_of_release AND year_of_release <=2023)
 );
 
 --Доп. задание Сотрудник
 
-create table if not exists Supervisor (
-	id SERIAL primary key,
-	supervisor_name VARCHAR(80) not null
-);
 
-create table if not exists Employee (
-	id SERIAL primary key,
-	superviser INTEGER references Supervisor(id),
+CREATE TABLE IF NOT EXISTS Employee (
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(80) not null,
-	department VARCHAR(80) not null
+	department VARCHAR(80) not null,
+	superviser INTEGER REFERENCES Employee (id)
 );
