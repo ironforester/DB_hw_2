@@ -46,9 +46,13 @@ CREATE TABLE IF NOT EXISTS Collection (
 	collection_name VARCHAR(80) NOT NULL,
 	year_of_release INTEGER NOT NULL CHECK(2000<=year_of_release AND year_of_release <=2023)
 );
+CREATE TABLE IF NOT EXISTS track_collection (
+	track_id INTEGER REFERENCES Track(track_id),
+	collection_id INTEGER REFERENCES Collection(collection_id),
+	CONSTRAINT ck PRIMARY KEY(track_id, collection_id)
+);
 
 --Доп. задание Сотрудник
-
 
 CREATE TABLE IF NOT EXISTS Employee (
 	id SERIAL PRIMARY KEY,
